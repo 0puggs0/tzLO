@@ -6,6 +6,7 @@ const usePosts = () => {
   const [offset, setOffset] = useState(0);
   const [data, setData] = useState<TPost[]>([]);
   const [refreshing, setRefreshing] = useState(true);
+  const [postsCount, setPostsCount] = useState(0);
 
   useEffect(() => {
     getPosts();
@@ -19,6 +20,7 @@ const usePosts = () => {
         count: 10,
       });
       setData(prev => [...prev, ...response.data.items]);
+      setPostsCount(response.data.count);
     } catch (e) {
       console.log(e);
     } finally {
@@ -26,7 +28,7 @@ const usePosts = () => {
     }
   };
   const onEndReached = () => {
-    if (!refreshing) {
+    if (!refreshing && offset < postsCount) {
       setOffset(prev => prev + 10);
     }
   };

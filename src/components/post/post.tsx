@@ -8,8 +8,6 @@ interface Props {
   item: TPost;
 }
 export const Post = memo(({item}: Props) => {
-  console.log('render', item.id);
-
   const [isReadMore, setIsReadMore] = useState(false);
   const imageHeight =
     (item.photos[0]?.photo?.xs?.height / item.photos[0]?.photo?.xs?.width) *
@@ -22,14 +20,15 @@ export const Post = memo(({item}: Props) => {
       <Text style={styles.message} numberOfLines={isReadMore ? 0 : 5}>
         {item?.message}
       </Text>
-      {item?.message?.length && (
+      {item?.message?.length ? (
         <Text
           onPress={() => setIsReadMore(prev => !prev)}
           style={styles.readMoreButton}>
           {isReadMore ? 'Свернуть' : 'Развернуть'}
         </Text>
+      ) : (
+        <></>
       )}
-
       {item.photos[0]?.photo?.xs.src && (
         <Image
           style={{
